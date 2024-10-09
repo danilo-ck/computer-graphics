@@ -127,11 +127,11 @@ void MallaInd::visualizarGL( )
    if(dvao == nullptr){
       dvao = new DescrVAO(numero_atributos_cauce, new DescrVBOAtribs(ind_atrib_posiciones, vertices));
       dvao->agregar(new DescrVBOInds(triangulos));
-      if(col_ver > 0)
+      if(col_ver.size() > 0)
          dvao->agregar(new DescrVBOAtribs(ind_atrib_colores, col_ver));
-      if(nor_ver > 0)
+      if(nor_ver.size() > 0)
          dvao->agregar(new DescrVBOAtribs(ind_atrib_normales, nor_ver));
-      if(cc_tt_ver > 0)
+      if(cc_tt_ver.size() > 0)
          dvao->agregar(new DescrVBOAtribs(ind_atrib_coord_text, cc_tt_ver));
    }
 
@@ -163,20 +163,20 @@ void MallaInd::visualizarGeomGL( )
    // COMPLETAR: práctica 1: visualizar únicamente la geometría del objeto 
    // 
    //    1. Desactivar todas las tablas de atributos del VAO (que no estén vacías)
-   if(col_ver > 0)
+   if(col_ver.size() > 0)
       dvao->habilitarAtrib(ind_atrib_colores, false);
-   if(nor_ver > 0)
+   if(nor_ver.size() > 0)
       dvao->habilitarAtrib(ind_atrib_normales, false);
-   if(cc_tt_ver > 0)
+   if(cc_tt_ver.size() > 0)
       dvao->habilitarAtrib(ind_atrib_coord_text, false);
    //    2. Dibujar la malla (únicamente visualizará los triángulos), se usa el método 'draw' del VAO (dvao)
    dvao->draw(GL_TRIANGLES);
    //    3. Volver a activar todos los atributos para los cuales la tabla no esté vacía
-   if(col_ver > 0)
+   if(col_ver.size() > 0)
       dvao->habilitarAtrib(ind_atrib_colores, true);
-   if(nor_ver > 0)
+   if(nor_ver.size() > 0)
       dvao->habilitarAtrib(ind_atrib_normales, true);
-   if(cc_tt_ver > 0)
+   if(cc_tt_ver.size() > 0)
       dvao->habilitarAtrib(ind_atrib_coord_text, true);
 }
 
@@ -301,6 +301,70 @@ Cubo::Cubo()
          {0,6,4}, {0,2,6}, // Z-
          {1,5,7}, {1,7,3}  // Z+ (+1)
       } ;
+
+}
+
+Tetraedro::Tetraedro()
+:  MallaInd( "tetraedro 4 vértices" )
+{
+
+   vertices =
+      {  { -1.0, -1.0, -1.0 }, // 0
+         { +1.0, -1.0, -1.0 }, // 1
+         { +0.0, +1.0, -1.0 }, // 2
+         { +0.0, +0.0, +1.0 }, // 3
+      } ;
+
+
+
+   triangulos =
+      {  {0,1,3}, 
+         {1,2,3}, 
+         {0,1,2}, 
+         {0,2,3}
+      } ;
+
+}
+
+CuboColores::CuboColores()
+:  MallaInd( "cubo 8 vértices" )
+{
+
+   vertices =
+      {  { -1.0, -1.0, -1.0 }, // 0
+         { -1.0, -1.0, +1.0 }, // 1
+         { -1.0, +1.0, -1.0 }, // 2
+         { -1.0, +1.0, +1.0 }, // 3
+         { +1.0, -1.0, -1.0 }, // 4
+         { +1.0, -1.0, +1.0 }, // 5
+         { +1.0, +1.0, -1.0 }, // 6
+         { +1.0, +1.0, +1.0 }, // 7
+      } ;
+
+
+
+   triangulos =
+      {  {0,1,3}, {0,3,2}, // X-
+         {4,7,5}, {4,6,7}, // X+ (+4)
+
+         {0,5,1}, {0,4,5}, // Y-
+         {2,3,7}, {2,7,6}, // Y+ (+2)
+
+         {0,6,4}, {0,2,6}, // Z-
+         {1,5,7}, {1,7,3}  // Z+ (+1)
+      } ;
+      
+
+   col_ver = 
+      {  {0.0, 0.0, 0.0}, // 0
+         {0.0, 0.0, 1.0}, // 1
+         {0.0, 1.0, 0.0}, // 2
+         {0.0, 1.0, 1.0}, // 3
+         {1.0, 0.0, 0.0}, // 4
+         {1.0, 0.0, 1.0}, // 5
+         {1.0, 1.0, 0.0}, // 6
+         {1.0, 1.0, 1.0}, // 7
+      };  
 
 }
 

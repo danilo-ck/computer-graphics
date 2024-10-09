@@ -126,7 +126,7 @@ void Escena::visualizarGL( )
    case ModosVisu::lineas:
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
       break;
-   case ModosVisu::lineas:
+   case ModosVisu::puntos:
       glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
       break;
    default:
@@ -313,8 +313,9 @@ Escena1::Escena1()
    using namespace std ;
    cout << "Creando objetos de la práctica 1." << endl ;
 
-
    objetos.push_back( new Cubo() );
+   objetos.push_back( new Tetraedro() );
+   objetos.push_back( new CuboColores() );
 
    // COMPLETAR: práctica 1: añadir resto de objetos a la escena 1
    //
