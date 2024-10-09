@@ -33,6 +33,7 @@
 #include "seleccion.h"   // para 'ColorDesdeIdent' 
 
 
+
 // *****************************************************************************
 // funciones auxiliares
 
@@ -109,7 +110,10 @@ void MallaInd::visualizarGL( )
    // Si el objeto tiene un color asignado (se comprueba con 'tieneColor')
    //    - hacer push del color actual del cauce
    //    - fijar el color en el cauce usando el color del objeto (se lee con 'leerColor()')
-
+   if(tieneColor()){
+      cauce->pushColor();
+      cauce->fijarColor(leerColor());
+   }
 
    // COMPLETAR: práctica 1: crear el descriptor de VAO, si no está creado
    //  Si el puntero 'dvao' es nulo, crear el descriptor de VAO
@@ -120,15 +124,26 @@ void MallaInd::visualizarGL( )
    //     que no estén vacías
    //  Si el VAO ya está creado, (dvao no nulo), no hay que hacer nada.
    //
-
+   if(dvao == nullptr){
+      dvao = new DescrVAO(numero_atributos_cauce, new DescrVBOAtribs(ind_atrib_posiciones, vertices));
+      dvao->agregar(new DescrVBOInds(triangulos));
+      if(col_ver > 0)
+         dvao->agregar(new DescrVBOAtribs(ind_atrib_colores, col_ver));
+      if(nor_ver > 0)
+         dvao->agregar(new DescrVBOAtribs(ind_atrib_normales, nor_ver));
+      if(cc_tt_ver > 0)
+         dvao->agregar(new DescrVBOAtribs(ind_atrib_coord_text, cc_tt_ver));
+   }
 
    // COMPLETAR: práctica 1: visualizar el VAO usando el método 'draw' de 'DescrVAO'
-
+   dvao->draw(GL_TRIANGLES);
 
    // COMPLETAR: práctica 1: restaurar color anterior del cauce 
    //
    // Si el objeto tiene un color asignado (se comprueba con 'tieneColor')
    //    - hacer 'pop' del color actual del cauce
+   if(tieneColor())
+      cauce->popColor();
 
 }
 
@@ -148,10 +163,21 @@ void MallaInd::visualizarGeomGL( )
    // COMPLETAR: práctica 1: visualizar únicamente la geometría del objeto 
    // 
    //    1. Desactivar todas las tablas de atributos del VAO (que no estén vacías)
+   if(col_ver > 0)
+      dvao->habilitarAtrib(ind_atrib_colores, false);
+   if(nor_ver > 0)
+      dvao->habilitarAtrib(ind_atrib_normales, false);
+   if(cc_tt_ver > 0)
+      dvao->habilitarAtrib(ind_atrib_coord_text, false);
    //    2. Dibujar la malla (únicamente visualizará los triángulos), se usa el método 'draw' del VAO (dvao)
+   dvao->draw(GL_TRIANGLES);
    //    3. Volver a activar todos los atributos para los cuales la tabla no esté vacía
-   // ....
-
+   if(col_ver > 0)
+      dvao->habilitarAtrib(ind_atrib_colores, true);
+   if(nor_ver > 0)
+      dvao->habilitarAtrib(ind_atrib_normales, true);
+   if(cc_tt_ver > 0)
+      dvao->habilitarAtrib(ind_atrib_coord_text, true);
 }
 
 // -----------------------------------------------------------------------------
