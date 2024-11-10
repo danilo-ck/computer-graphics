@@ -66,7 +66,40 @@ class MallaRevolPLY : public MallaRevol
                   const unsigned nperfiles ) ;
 } ;
 
+// Práctica 2 Cilindro, Cono y Esfera
 
+class Cilindro : public MallaRevol
+{
+   public:
+   // Constructor: crea el perfil original y llama a inicializar
+   // la base tiene centro en el origen, el radio y la altura son 1
+      Cilindro(
+         const int num_verts_per, // número de vértices del perfil original (m)
+         const unsigned nperfiles // número de perfiles (n)
+      );
+};
+
+class Cono : public MallaRevol
+{
+   public:
+   // Constructor: crea el perfil original y llama a inicializar
+   // la base tiene centro en el origen, el radio y la altura son 1
+      Cono(
+         const int num_verts_per, // número de vértices del perfil original (m)
+         const unsigned nperfiles // número de perfiles (n)
+      );
+};
+
+class Esfera : public MallaRevol
+{
+   public:
+   // Constructor: crea el perfil original y llama a inicializar
+   // la base tiene centro en el origen, el radio y la altura son 1
+      Esfera(
+         const int num_verts_per, // número de vértices del perfil original (m)
+         const unsigned nperfiles // número de perfiles (n)
+      );
+};
 
 
 
