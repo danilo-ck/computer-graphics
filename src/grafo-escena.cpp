@@ -29,6 +29,7 @@
 #include "grafo-escena.h"
 #include "aplicacion-ig.h"
 #include "seleccion.h"   // para 'ColorDesdeIdent' 
+#include "malla-revol.h"
 
 using namespace glm;
 
