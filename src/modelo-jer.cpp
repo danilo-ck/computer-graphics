@@ -24,77 +24,89 @@ Robot::Robot() {
     NodoGrafoEscena *robot = new NodoGrafoEscena();
     unsigned ind_pos_robot = robot->agregar(translate(vec3{0.0, 0.0, 0.0}));
     
-    // Torso (cubo escalado)
+    // Torso ajustado (más delgado y proporcionado)
     NodoGrafoEscena *torso = new NodoGrafoEscena();
-    torso->agregar(scale(vec3{1.0, 1.5, 0.5}));
-    torso->ponerColor({0.7, 0.7, 0.7});
+    torso->agregar(scale(vec3{0.8, 1.2, 0.6}));
+    torso->ponerColor({0.4, 0.4, 0.5});
     torso->agregar(new Cubo());
     
-    // Cabeza (esfera) con ojos
+    // Pecho reposicionado
+    NodoGrafoEscena *pecho = new NodoGrafoEscena();
+    pecho->agregar(translate(vec3{0.0, 0.2, 0.31}));
+    pecho->agregar(scale(vec3{0.6, 0.4, 0.1}));
+    pecho->ponerColor({0.6, 0.1, 0.1});
+    pecho->agregar(new Cubo());
+    
+    // Cabeza reposicionada más arriba
     NodoGrafoEscena *cabeza = new NodoGrafoEscena();
     unsigned ind_rot_cabeza = cabeza->agregar(rotate(0.0f, vec3{0.0, 1.0, 0.0}));
-    cabeza->agregar(translate(vec3{0.0, 2.0, 0.0}));
+    cabeza->agregar(translate(vec3{0.0, 1.5, 0.0}));
     
-    // Esfera de la cabeza
-    NodoGrafoEscena *esfera_cabeza = new NodoGrafoEscena();
-    esfera_cabeza->agregar(scale(vec3{0.5, 0.5, 0.5}));
-    esfera_cabeza->ponerColor({0.8, 0.8, 0.8});
-    esfera_cabeza->agregar(new Esferas(20, 20, 1.0));
+    // Casco de la cabeza
+    NodoGrafoEscena *casco = new NodoGrafoEscena();
+    casco->agregar(scale(vec3{0.6, 0.7, 0.6}));
+    casco->ponerColor({0.3, 0.3, 0.35});
+    casco->agregar(new Esferas(30, 30, 1.0));
     
-    // Ojos
+    // Ojos mejorados (con brillo)
     NodoGrafoEscena *ojo_izq = new NodoGrafoEscena();
-    ojo_izq->agregar(translate(vec3{-0.2, 0.1, 0.4}));
-    ojo_izq->agregar(scale(vec3{0.1, 0.1, 0.1}));
-    ojo_izq->ponerColor({0.0, 0.0, 0.0});
+    ojo_izq->agregar(translate(vec3{-0.25, 0.1, 0.5}));
+    ojo_izq->agregar(scale(vec3{0.12, 0.08, 0.05}));
+    ojo_izq->ponerColor({0.0, 0.8, 0.8});
     ojo_izq->agregar(new Esferas(20, 20, 1.0));
     
     NodoGrafoEscena *ojo_der = new NodoGrafoEscena();
-    ojo_der->agregar(translate(vec3{0.2, 0.1, 0.4}));
-    ojo_der->agregar(scale(vec3{0.1, 0.1, 0.1}));
-    ojo_der->ponerColor({0.0, 0.0, 0.0});
+    ojo_der->agregar(translate(vec3{0.25, 0.1, 0.5}));
+    ojo_der->agregar(scale(vec3{0.12, 0.08, 0.05}));
+    ojo_der->ponerColor({0.0, 0.8, 0.8});
     ojo_der->agregar(new Esferas(20, 20, 1.0));
     
-    cabeza->agregar(esfera_cabeza);
+    cabeza->agregar(casco);
     cabeza->agregar(ojo_izq);
     cabeza->agregar(ojo_der);
     
-    // Brazo izquierdo
+    // Brazos con punto de rotación en el hombro
     NodoGrafoEscena *brazo_izq = new NodoGrafoEscena();
-    unsigned ind_rot_brazo_izq = brazo_izq->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));
-    brazo_izq->agregar(translate(vec3{-1.2, 1.0, 0.0}));
+    brazo_izq->agregar(translate(vec3{-0.9, 0.8, 0.0}));  // Primero posicionamos el punto de rotación
+    unsigned ind_rot_brazo_izq = brazo_izq->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));  // Luego la rotación
+    brazo_izq->agregar(translate(vec3{0.0, -0.4, 0.0}));  // Desplazamiento para centrar el brazo
     brazo_izq->agregar(scale(vec3{0.2, 0.8, 0.2}));
-    brazo_izq->ponerColor({0.6, 0.6, 0.6});
+    brazo_izq->ponerColor({0.4, 0.4, 0.45});
     brazo_izq->agregar(new Cubo());
     
-    // Brazo derecho
     NodoGrafoEscena *brazo_der = new NodoGrafoEscena();
-    unsigned ind_rot_brazo_der = brazo_der->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));
-    brazo_der->agregar(translate(vec3{1.2, 1.0, 0.0}));
+    brazo_der->agregar(translate(vec3{0.9, 0.8, 0.0}));  // Primero posicionamos el punto de rotación
+    unsigned ind_rot_brazo_der = brazo_der->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));  // Luego la rotación
+    brazo_der->agregar(translate(vec3{0.0, -0.4, 0.0}));  // Desplazamiento para centrar el brazo
     brazo_der->agregar(scale(vec3{0.2, 0.8, 0.2}));
-    brazo_der->ponerColor({0.6, 0.6, 0.6});
+    brazo_der->ponerColor({0.4, 0.4, 0.45});
     brazo_der->agregar(new Cubo());
     
-    // Pierna izquierda
+    // IMPORTANTE: Agregar los brazos al robot
+    robot->agregar(torso);
+    robot->agregar(pecho);
+    robot->agregar(cabeza);
+    robot->agregar(brazo_izq);
+    robot->agregar(brazo_der);
+    
+    // Piernas reposicionadas
     NodoGrafoEscena *pierna_izq = new NodoGrafoEscena();
     unsigned ind_rot_pierna_izq = pierna_izq->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));
-    pierna_izq->agregar(translate(vec3{-0.4, -1.5, 0.0}));
-    pierna_izq->agregar(scale(vec3{0.25, 1.0, 0.25}));
+    pierna_izq->agregar(translate(vec3{-0.3, -1.2, 0.0}));
+    pierna_izq->agregar(scale(vec3{0.2, 0.8, 0.2}));
     pierna_izq->ponerColor({0.5, 0.5, 0.5});
     pierna_izq->agregar(new Cubo());
     
-    // Pierna derecha
     NodoGrafoEscena *pierna_der = new NodoGrafoEscena();
     unsigned ind_rot_pierna_der = pierna_der->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));
-    pierna_der->agregar(translate(vec3{0.4, -1.5, 0.0}));
-    pierna_der->agregar(scale(vec3{0.25, 1.0, 0.25}));
+    pierna_der->agregar(translate(vec3{0.3, -1.2, 0.0}));
+    pierna_der->agregar(scale(vec3{0.2, 0.8, 0.2}));
     pierna_der->ponerColor({0.5, 0.5, 0.5});
     pierna_der->agregar(new Cubo());
     
     // Agregar todo al nodo raíz
     robot->agregar(torso);
     robot->agregar(cabeza);
-    robot->agregar(brazo_izq);
-    robot->agregar(brazo_der);
     robot->agregar(pierna_izq);
     robot->agregar(pierna_der);
     
@@ -125,14 +137,17 @@ void Robot::actualizarEstadoParametro(const unsigned iParam, const float t_sec) 
         case 2: // Movimiento del brazo derecho
             *pm_rot_brazo_der = rotate(float(-sin(2*M_PI*t_sec)), vec3{1.0, 0.0, 0.0});
             break;
-        case 3: // Movimiento de la pierna izquierda
-            *pm_rot_pierna_izq = rotate(float(sin(2*M_PI*t_sec)), vec3{1.0, 0.0, 0.0});
+        case 3: // Movimiento de la pierna izquierda (muy sutil)
+            *pm_rot_pierna_izq = rotate(float(sin(2*M_PI*t_sec) * 0.2), vec3{1.0, 0.0, 0.0});
             break;
-        case 4: // Movimiento de la pierna derecha
-            *pm_rot_pierna_der = rotate(float(-sin(2*M_PI*t_sec)), vec3{1.0, 0.0, 0.0});
+        case 4: // Movimiento de la pierna derecha (muy sutil)
+            *pm_rot_pierna_der = rotate(float(-sin(2*M_PI*t_sec) * 0.2), vec3{1.0, 0.0, 0.0});
             break;
-        case 5: // Movimiento del robot completo (salto)
-            *pm_pos_robot = translate(vec3{0.0, 0.5f*abs(sin(t_sec)), 0.0});
+        case 5: // Salto más dinámico
+            float altura = 1.0f;  // Aumentada la altura máxima
+            float velocidad = 3.0f;  // Aumentada la frecuencia
+            float salto = pow(abs(sin(velocidad * t_sec)), 0.5); // Función exponencial para efecto de impulso
+            *pm_pos_robot = translate(vec3{0.0, altura * salto, 0.0});
             break;
     }
 }
