@@ -30,7 +30,7 @@
 #include "aplicacion-ig.h"
 #include "seleccion.h"   // para 'ColorDesdeIdent' 
 
-
+using namespace glm;
 
 // *********************************************************************
 // Entrada del nodo del Grafo de Escena
@@ -122,7 +122,7 @@ void NodoGrafoEscena::visualizarGL(  )
    // 3. Para cada entrada del vector de entradas:
    //     - si la entrada es de tipo objeto: llamar recursivamente a 'visualizarGL'
    //     - si la entrada es de tipo transformación: componer la matriz (con 'compMM')
-   for(i=0; i < entradas.size(); i++){
+   for(unsigned i = 0; i < entradas.size(); i++){
       if(entradas[i].tipo == TipoEntNGE::objeto){
          entradas[i].objeto->visualizarGL();
       }else if(entradas[i].tipo == TipoEntNGE::transformacion){
@@ -169,7 +169,7 @@ void NodoGrafoEscena::visualizarGeomGL(  )
    // 2. Para cada entrada del vector de entradas:
    //         - Si la entrada es de tipo objeto: llamar recursivamente a 'visualizarGeomGL'.
    //         - Si la entrada es de tipo transformación: componer la matriz (con 'compMM').
-   for(i=0; i < entradas.size(); i++){
+   for(unsigned i = 0; i < entradas.size(); i++){
       if(entradas[i].tipo == TipoEntNGE::objeto){
          entradas[i].objeto->visualizarGeomGL();
       }else if(entradas[i].tipo == TipoEntNGE::transformacion){
@@ -242,10 +242,8 @@ void NodoGrafoEscena::visualizarModoSeleccionGL()
 unsigned NodoGrafoEscena::agregar( const EntradaNGE & entrada )
 {
    // COMPLETAR: práctica 3: agregar la entrada al nodo, devolver índice de la entrada agregada
-   
-   entradas.pushback(entrada);
+   entradas.push_back(entrada);
    return entradas.size() - 1;
-
 }
 // -----------------------------------------------------------------------------
 // construir una entrada y añadirla (al final)
