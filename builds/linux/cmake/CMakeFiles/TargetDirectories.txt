@@ -1,4 +1,0 @@
-/home/danilock/repos/computer-graphics/builds/linux/cmake/CMakeFiles/debug_exe.dir
-/home/danilock/repos/computer-graphics/builds/linux/cmake/CMakeFiles/release_exe.dir
-/home/danilock/repos/computer-graphics/builds/linux/cmake/CMakeFiles/edit_cache.dir
-/home/danilock/repos/computer-graphics/builds/linux/cmake/CMakeFiles/rebuild_cache.dir
