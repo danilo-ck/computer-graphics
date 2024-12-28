@@ -123,13 +123,23 @@ void NodoGrafoEscena::visualizarGL(  )
    // 3. Para cada entrada del vector de entradas:
    //     - si la entrada es de tipo objeto: llamar recursivamente a 'visualizarGL'
    //     - si la entrada es de tipo transformación: componer la matriz (con 'compMM')
-   for(unsigned i = 0; i < entradas.size(); i++){
-      if(entradas[i].tipo == TipoEntNGE::objeto){
-         entradas[i].objeto->visualizarGL();
-      }else if(entradas[i].tipo == TipoEntNGE::transformacion){
-         cauce->compMM(*(entradas[i].matriz));
+   
+   
+   for( unsigned i = 0 ; i < entradas.size() ; i++ ){
+      switch( entradas[i].tipo ){
+         case TipoEntNGE::objeto : // entrada objeto:
+            entradas[i].objeto->visualizarGL();//llamar recursivamente a visualizarGL
+         break ;
+         case TipoEntNGE::transformacion : // entrada transf.:
+            cauce->compMM( *(entradas[i].matriz)); // componer matriz
+         break ;
+         case TipoEntNGE::material : 
+            if ( aplicacionIG->iluminacion ) 
+            pila_materiales->activar( entradas[i].material );
+         break ;
       }
    }
+      
    // 4. Restaurar la copia guardada de la matriz de modelado (con 'popMM')
    cauce->popMM();
    // 5. Si el objeto tiene color asignado:
@@ -145,8 +155,9 @@ void NodoGrafoEscena::visualizarGL(  )
    //   2. si una entrada es de tipo material, activarlo usando a pila de materiales
    //   3. al finalizar, hacer 'pop' de la pila de materiales (restaura el material activo al inicio)
 
-   // ......
-
+   if (aplicacionIG->iluminacion){
+      pila_materiales->pop();
+   }
 
 }
 
