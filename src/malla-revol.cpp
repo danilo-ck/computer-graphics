@@ -49,49 +49,49 @@ void MallaRevol::inicializar
    using namespace glm;
 
    // COMPLETAR: práctica 4: creación de las normales y materiales/texturas
-   vector<vec3> normales_perfil;
+   vector<vec3> normales_m;
 
-   // Calcular las normales del perfil
-   for (int i = 0; i < perfil.size() - 1; i++) {
-      float delta_x = (perfil[i + 1] - perfil[i])[0];
-      float delta_y = (perfil[i + 1] - perfil[i])[1];
-      vec3 normal(vec3(delta_y, -delta_x, 0.0f));
+   //Aristas
+   for (int i = 0; i < perfil.size()-1; i++) {
+      float v_1 = (perfil[i+1] - perfil[i])[0];
+      float v_2 = (perfil[i+1] - perfil[i])[1];
+      vec3 m_i(vec3(v_2, -v_1, 0.0f));
 
-      if (length(normal) != 0.0)
-         normal = normalize(normal);
+      if (length(m_i) != 0.0) {
+         m_i = normalize(m_i);
+      }
       
-      normales_perfil.push_back(normal);
+      normales_m.push_back(m_i);
    }
 
-   vector<vec3> normales_vertices;
+   //Vértices
+   vector<vec3> normales_n;
 
-   // Calcular las normales de los vértices
-   normales_vertices.push_back(normales_perfil[0]);
-   for (int i = 1; i < perfil.size() - 1; i++) {
-      normales_vertices.push_back(normalize(normales_perfil[i - 1] + normales_perfil[i]));
+   normales_n.push_back(normales_m[0]);
+   for (int i = 1; i < perfil.size()-1; i++) {
+      normales_n.push_back(normalize(normales_m[i-1] + normales_m[i]));
    }
-   normales_vertices.push_back(normales_perfil[perfil.size() - 2]);
 
-   vector<float> distancias, coordenadas_textura, sumas_parciales;
+   normales_n.push_back(normales_m[perfil.size() - 2]);
+
+   //Vectores d y t
+   vector<float> d, t, sumas_parciales;
    float suma_total;
 
-   // Calcular las distancias entre los puntos del perfil
-   for (int i = 0; i < perfil.size() - 1; i++) {
-      distancias.push_back(sqrt(length(perfil[i + 1] - perfil[i])));
+   for (int i = 0; i < perfil.size()-1; i++) {
+      d.push_back(sqrt(length(perfil[i+1] - perfil[i])));
    }
 
-   // Calcular las sumas parciales de las distancias
    sumas_parciales.push_back(0.0f);
    for (int i = 1; i < perfil.size(); i++) {
-      sumas_parciales.push_back(sumas_parciales[i - 1] + distancias[i - 1]);
+      sumas_parciales.push_back(sumas_parciales[i-1] + d[i-1]);
    }
 
-   suma_total = sumas_parciales[perfil.size() - 1];
-
-   // Calcular las coordenadas de textura
-   coordenadas_textura.push_back(0.0f);
-   for (int i = 1; i < perfil.size(); i++)
-      coordenadas_textura.push_back(sumas_parciales[i] / suma_total);
+   suma_total = sumas_parciales[perfil.size()-1];
+   t.push_back(0.0f);
+   for (int i = 1; i < perfil.size(); i++) {
+      t.push_back(sumas_parciales[i] / suma_total);
+   }
    
    // COMPLETAR: práctica 2: implementar algoritmo de creación de malla de revolución
    //
@@ -100,43 +100,42 @@ void MallaRevol::inicializar
    //
    // ............................... 
 
-   // Crear los vértices de la malla de revolución
+   //Rellenamos la tabla de vertices
    for (int i = 0; i < num_copias; i++) {
       for (int j = 0; j < perfil.size(); j++) {
-         float angulo = (2 * M_PI * i) / (num_copias - 1);
+         float tita = (2*M_PI*i)/(num_copias - 1);
 
-         std::vector<std::vector<float>> matriz_rotacion = 
-         {  {cos(angulo), 0.0, sin(angulo)},
+         std::vector<std::vector<float>> matriz_giro = 
+         {  {cos(tita), 0.0, sin(tita)},
             {0 ,1, 0},
-            {-sin(angulo), 0, cos(angulo)},
+            {-sin(tita), 0, cos(tita)},
          };
 
-         glm::vec3 vertice_rotado = {
-            matriz_rotacion[0][0] * perfil[j][0] + matriz_rotacion[0][1] * perfil[j][1] + matriz_rotacion[0][2] * perfil[j][2],
-            matriz_rotacion[1][0] * perfil[j][0] + matriz_rotacion[1][1] * perfil[j][1] + matriz_rotacion[1][2] * perfil[j][2],
-            matriz_rotacion[2][0] * perfil[j][0] + matriz_rotacion[2][1] * perfil[j][1] + matriz_rotacion[2][2] * perfil[j][2],
+         glm::vec3 nuevo_vertice = {
+            matriz_giro[0][0]*perfil[j][0] + matriz_giro[0][1]*perfil[j][1] + matriz_giro[0][2]*perfil[j][2],
+            matriz_giro[1][0]*perfil[j][0] + matriz_giro[1][1]*perfil[j][1] + matriz_giro[1][2]*perfil[j][2],
+            matriz_giro[2][0]*perfil[j][0] + matriz_giro[2][1]*perfil[j][1] + matriz_giro[2][2]*perfil[j][2],
          };
 
-         vertices.push_back(vertice_rotado);
+         vertices.push_back(nuevo_vertice);
 
-         // Práctica 4: Calcular las normales de los vértices rotados
-         vec3 normal_rotada = vec3(normales_vertices[j][0] * cos(angulo), normales_vertices[j][1], -normales_vertices[j][0] * sin(angulo));
-         if (length(normal_rotada) != 0.0)
-            normalize(normal_rotada);
-         nor_ver.push_back(normal_rotada);
+         // Práctica 4
+         vec3 aux = vec3(normales_n[j][0] * cos(tita), normales_n[j][1], -normales_n[j][0] * sin(tita));
+         if (length(aux) != 0.0) {
+            normalize(aux);
+         }
+         nor_ver.push_back(aux);
          
-         // Calcular las coordenadas de textura de los vértices rotados
-         cc_tt_ver.push_back({float(i) / (num_copias - 1), 1 - coordenadas_textura[j]});
+         cc_tt_ver.push_back({float(i) / (num_copias-1), 1-t[j]});
       }
    }
-
-   // Crear los triángulos de la malla de revolución
-   for (int i = 0; i < num_copias - 1; i++) {
+   // Rellenamos la tabla de triangulos
+   for (int i = 0; i < num_copias-1; i++) {
       for (int j = 0; j < perfil.size() - 1; j++) {
-         int indice = i * perfil.size() + j;
+         int k = i * perfil.size() + j;
 
-         triangulos.push_back({indice, indice + perfil.size(), indice + perfil.size() + 1});
-         triangulos.push_back({indice, indice + perfil.size() + 1, indice + 1});
+         triangulos.push_back({k, k + perfil.size(), k + perfil.size() + 1});
+         triangulos.push_back({k, k + perfil.size() + 1, k + 1});
       }
    }
 }

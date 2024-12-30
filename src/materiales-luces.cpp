@@ -109,18 +109,6 @@ void Textura::activar(  )
    cauce->fijarTipoGCT(modo_gen_ct, coefs_s, coefs_t);
 
 }
-// *********************************************************************
-// crea un material usando un color plano y los coeficientes de las componentes
-
-Material::Material( const float p_k_amb, const float p_k_dif,
-                    const float p_k_pse, const float p_exp_pse )
-{
-   textura  = nullptr ;
-   k_amb    = p_k_amb ;
-   k_dif    = p_k_dif ;
-   k_pse    = p_k_pse ;
-   exp_pse  = p_exp_pse ;
-}
 
 //----------------------------------------------------------------------
 
@@ -135,6 +123,19 @@ TexturaXZ::TexturaXZ(const std::string &nom) : Textura(nom) {
 
    coefs_t[1] = 0.0;
    coefs_t[2] = 1.0;
+}
+
+// *********************************************************************
+// crea un material usando un color plano y los coeficientes de las componentes
+
+Material::Material( const float p_k_amb, const float p_k_dif,
+                    const float p_k_pse, const float p_exp_pse )
+{
+   textura  = nullptr ;
+   k_amb    = p_k_amb ;
+   k_dif    = p_k_dif ;
+   k_pse    = p_k_pse ;
+   exp_pse  = p_exp_pse ;
 }
 
 //----------------------------------------------------------------------

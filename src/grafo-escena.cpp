@@ -118,6 +118,11 @@ void NodoGrafoEscena::visualizarGL(  )
       cauce->pushColor();
       cauce->fijarColor(leerColor());
    }
+
+   if (aplicacionIG->iluminacion) {
+      pila_materiales->push();
+   }
+
    // 2. Guardar copia de la matriz de modelado (con 'pushMM'),
    cauce->pushMM();
    // 3. Para cada entrada del vector de entradas:
@@ -216,7 +221,15 @@ void NodoGrafoEscena::visualizarNormalesGL(  )
    // - ignorar las entradas de tipo material, y la gestión de materiales (se usa sin iluminación)
 
    // .......
-
+   cauce->pushMM();
+   for (int i = 0; i < entradas.size(); i++) {
+      if (entradas[i].tipo == TipoEntNGE::objeto) {
+         entradas[i].objeto->visualizarNormalesGL();
+      } else if (entradas[i].tipo == TipoEntNGE::transformacion) {
+         cauce->compMM(*entradas[i].matriz);
+      }
+   }
+   cauce->popMM();
 }
 
 // -----------------------------------------------------------------------------

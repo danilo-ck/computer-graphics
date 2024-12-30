@@ -258,7 +258,16 @@ void MallaInd::visualizarNormalesGL(  )
    //       tipo de primitiva 'GL_LINES'.
 
    //  ..........
+   if (dvao_normales == nullptr) {
 
+      for (int i = 0; i < vertices.size(); i++) {
+         segmentos_normales.push_back(vertices[i]);
+         segmentos_normales.push_back(vertices[i] + (0.35f * nor_ver[i]));
+      }
+      dvao_normales = new DescrVAO(numero_atributos_cauce, new DescrVBOAtribs(ind_atrib_posiciones, segmentos_normales));
+   }
+   dvao_normales->draw(GL_LINES);
+   
 }
 
 // -----------------------------------------------------------------------------
