@@ -131,11 +131,20 @@ class Tetraedro : public MallaInd
       Tetraedro();
 };
 
+// -----------------------------------------------------------------------------------------------
+
 class CuboColores : public MallaInd
 {
    public:
       CuboColores();
 };
 
+// -----------------------------------------------------------------------------------------------
+
+class Cubo24 : public MallaInd
+{
+   public:
+      Cubo24();
+};
 
 #endif

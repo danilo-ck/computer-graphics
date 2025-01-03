@@ -368,8 +368,12 @@ bool NodoGrafoEscena::buscarObjeto
    return false ;
 }
 
+// -----------------------------------------------------------------------------
 
-
+NodoCubo24::NodoCubo24(){
+   agregar( new Material( new Textura("window-icon.jpg") , 0.5, 0.3, 0.7, 100.0) );
+   agregar( new Cubo24() );
+}
 
 
 
