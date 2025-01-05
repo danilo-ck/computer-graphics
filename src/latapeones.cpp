@@ -20,11 +20,19 @@ Lata::Lata(const std::string & nombre_arch) {
     NodoGrafoEscena* cara = new NodoGrafoEscena();
     NodoGrafoEscena* tapa = new NodoGrafoEscena();
 
+    base->agregar(translate(vec3(0.0, 0.0, 0.0)));
+    base->agregar(scale(vec3(1.0, 1.0, 1.0)));
     base->agregar(materialBases);
     base->agregar(new MallaRevolPLY("lata-pinf.ply", 32));
+
+    tapa->agregar(translate(vec3(0.0, 0.0, 0.0)));
+    tapa->agregar(scale(vec3(1.0, 1.0, 1.0)));
     tapa->agregar(materialBases);
     tapa->agregar(new MallaRevolPLY("lata-psup.ply", 32));
+    
 
+    cara->agregar(translate(vec3(0.0, 0.0, 0.0)));
+    cara->agregar(scale(vec3(1.0, 1.0, 1.0)));
     cara->agregar(materialLata);
     cara->agregar(new MallaRevolPLY("lata-pcue.ply", 32));
 
@@ -45,8 +53,8 @@ LataPeones::LataPeones() {
 
     TexturaXY* texturaXY_madera = new TexturaXY("text-madera.jpg");
     Material* materialPeonMadera = new Material(texturaXY_madera, 0.5, 0.6, 0.5, 50.0);
-    Material* materialPeonBlanco = new Material(0.5, 0.2, 0.5, 5.0);
-    Material* materialPeonNegro = new Material(0.01, 0.2, 0.5, 50.0);
+    Material* materialPeonBlanco = new Material(0.3, 1.0, 0, 0.0);
+    Material* materialPeonNegro = new Material(0.5, 0.2, 0.9, 15.0);
 
     NodoGrafoEscena* peonMadera = new NodoGrafoEscena();
     NodoGrafoEscena* peonNegro = new NodoGrafoEscena();
@@ -58,24 +66,26 @@ LataPeones::LataPeones() {
 
     peonMadera->ponerNombre("Peón de madera");
     peonMadera->ponerIdentificador(identPeonMadera);
-    peonMadera->agregar(translate(vec3(0.0, 0.4, 0.7)));
-    peonMadera->agregar(scale(vec3(0.25, 0.25, 0.25)));
+    peonMadera->agregar(translate(vec3(0.0, 0.2, 0.85)));
+    peonMadera->agregar(scale(vec3(0.15, 0.15, 0.15)));
     peonMadera->agregar(materialPeonMadera);
     peonMadera->agregar(new Peon(32));
 
-    peonNegro->ponerNombre("Peón Negro");
-    peonNegro->ponerIdentificador(identPeonNegro);
-    peonNegro->agregar(translate(vec3(0.6, 0.4, 0.7)));
-    peonNegro->agregar(scale(vec3(0.25, 0.25, 0.25)));
-    peonNegro->agregar(materialPeonNegro);
-    peonNegro->agregar(new Peon(32));
-
     peonBlanco->ponerNombre("Peón blanco");
     peonBlanco->ponerIdentificador(identPeonBlanco);
-    peonBlanco->agregar(translate(vec3(1.2, 0.4, 0.7)));
-    peonBlanco->agregar(scale(vec3(0.25, 0.25, 0.25)));
+    peonBlanco->agregar(translate(vec3(0.45, 0.2, 0.85)));
+    peonBlanco->agregar(scale(vec3(0.15, 0.15, 0.15)));
+    peonBlanco->ponerColor(vec3(1.0, 1.0, 1.0));
     peonBlanco->agregar(materialPeonBlanco);
     peonBlanco->agregar(new Peon(32));
+
+    peonNegro->ponerNombre("Peón Negro");
+    peonNegro->ponerIdentificador(identPeonNegro);
+    peonNegro->agregar(translate(vec3(0.9, 0.2, 0.85)));
+    peonNegro->agregar(scale(vec3(0.15, 0.15, 0.15)));
+    peonNegro->ponerColor(vec3(0.0, 0.0, 0.0));
+    peonNegro->agregar(materialPeonNegro);
+    peonNegro->agregar(new Peon(32));
 
 
     actual->agregar(peonMadera);

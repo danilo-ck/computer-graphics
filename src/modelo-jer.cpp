@@ -12,6 +12,12 @@ using namespace glm;
 Robot::Robot() {
     ponerNombre("robot");
     
+    //Texturas y materiales
+    TexturaXY* multiculor = new TexturaXY("tiles-1557136_1280.jpg");
+    Material* materialOjos = new Material(multiculor, 0.7, 0.2, 1.0, 50.0);
+    Material* materialBlanco = new Material(0.5, 0.9, 0.5, 50.0); // Material blanco metálico
+    Material* materialNegro = new Material(0.1, 0.1, 0.1, 50.0); // Material negro difuso
+
     // Nodo raíz
     NodoGrafoEscena *robot = new NodoGrafoEscena();
     unsigned ind_pos_robot = robot->agregar(translate(vec3{0.0, -0.6, 0.0}));
@@ -24,23 +30,27 @@ Robot::Robot() {
     // Esfera Cabeza 
     NodoGrafoEscena *casco = new NodoGrafoEscena();
     casco->agregar(scale(vec3{0.55, 0.55, 0.55}));
-    casco->ponerColor({0.7, 0.7, 0.75});
-    casco->agregar(new Esfera(20, 20));
+    
+    casco->agregar(materialBlanco);
+    //casco->ponerColor({0.7, 0.7, 0.75});
+    casco->agregar(new Esfera(100, 100));
     cabeza->agregar(casco);
     
     // Ojos (esferas)
     NodoGrafoEscena *ojo_izq = new NodoGrafoEscena();
     ojo_izq->agregar(translate(vec3{-0.25, 0.15, 0.45}));
     ojo_izq->agregar(scale(vec3{0.1, 0.1, 0.1}));
-    ojo_izq->ponerColor({0.0, 0.8, 0.8});
-    ojo_izq->agregar(new Esfera(20, 20));
+    //ojo_izq->ponerColor({0.0, 0.8, 0.8});
+    ojo_izq->agregar(materialOjos);
+    ojo_izq->agregar(new Esfera(60, 60));
     cabeza->agregar(ojo_izq);
     
     NodoGrafoEscena *ojo_der = new NodoGrafoEscena();
     ojo_der->agregar(translate(vec3{0.25, 0.15, 0.45}));
     ojo_der->agregar(scale(vec3{0.1, 0.1, 0.1}));
-    ojo_der->ponerColor({0.0, 0.8, 0.8});
-    ojo_der->agregar(new Esfera(20, 20));
+    //ojo_der->ponerColor({0.0, 0.8, 0.8});
+    ojo_der->agregar(materialOjos);
+    ojo_der->agregar(new Esfera(60, 60));
     cabeza->agregar(ojo_der);
 
     // Torso 
@@ -48,8 +58,10 @@ Robot::Robot() {
     // Cilindro central
     torso->agregar(translate(vec3{0.0, -0.15, 0.0}));
     torso->agregar(scale(vec3{0.6, 1.2, 0.6}));
-    torso->ponerColor({0.4, 0.4, 0.5});
-    torso->agregar(new Cilindro(20, 30));
+
+    
+    torso->agregar(materialBlanco);
+    torso->agregar(new Cilindro(80, 80));
     
     // Brazos cilindros y esferas 
     NodoGrafoEscena *brazo_der = new NodoGrafoEscena();
@@ -60,25 +72,28 @@ Robot::Robot() {
     NodoGrafoEscena *mano_der = new NodoGrafoEscena();
     mano_der->agregar(translate(vec3{0.0, -0.6, 0.0}));
     mano_der->agregar(scale(vec3{0.25, 0.25, 0.25}));
-    mano_der->ponerColor({0.5, 0.5, 0.55});
-    mano_der->agregar(new Esfera(20, 20));
+    mano_der->agregar(materialBlanco);
+    //mano_der->ponerColor({0.5, 0.5, 0.55});
+    mano_der->agregar(new Esfera(60, 60));
     brazo_der->agregar(mano_der);
     
     // Brazo derecho (cilindro)
     NodoGrafoEscena *brazo_sup_der = new NodoGrafoEscena();
     brazo_sup_der->agregar(translate(vec3{0.0, -0.6, 0.0}));
     brazo_sup_der->agregar(scale(vec3{0.15, 1.2, 0.15}));
-    brazo_sup_der->ponerColor({0.4, 0.4, 0.45});
+    brazo_sup_der->agregar(materialNegro);
+    //brazo_sup_der->ponerColor({0.4, 0.4, 0.45});
     brazo_sup_der->agregar(new Cilindro(10, 20));
     brazo_der->agregar(brazo_sup_der);
 
     // Hombro derecho
-    NodoGrafoEscena *codo_der = new NodoGrafoEscena();
-    codo_der->agregar(translate(vec3{0.0, 0.6, 0.0}));
-    codo_der->agregar(scale(vec3{0.25, 0.25, 0.25}));
-    codo_der->ponerColor({0.5, 0.5, 0.55});
-    codo_der->agregar(new Esfera(20, 20));
-    brazo_der->agregar(codo_der);
+    NodoGrafoEscena *hombro_der = new NodoGrafoEscena();
+    hombro_der->agregar(translate(vec3{0.0, 0.6, 0.0}));
+    hombro_der->agregar(scale(vec3{0.25, 0.25, 0.25}));
+    hombro_der->agregar(materialBlanco);
+    //hombro_der->ponerColor({0.5, 0.5, 0.55});
+    hombro_der->agregar(new Esfera(60, 60));
+    brazo_der->agregar(hombro_der);
     
     // Brazo izquierdo
     NodoGrafoEscena *brazo_izq = new NodoGrafoEscena();
@@ -86,28 +101,31 @@ Robot::Robot() {
     unsigned ind_rot_brazo_izq = brazo_izq->agregar(rotate(0.0f, vec3{1.0, 0.0, 0.0}));
     
     // Hombro izquierdo (esfera)
-    NodoGrafoEscena *hombro_izq = new NodoGrafoEscena();
-    hombro_izq->agregar(translate(vec3{0.0, -0.6, 0.0}));
-    hombro_izq->agregar(scale(vec3{0.25, 0.25, 0.25}));
-    hombro_izq->ponerColor({0.5, 0.5, 0.55});
-    hombro_izq->agregar(new Esfera(20, 20));
-    brazo_izq->agregar(hombro_izq);
+    NodoGrafoEscena *mano_izq = new NodoGrafoEscena();
+    mano_izq->agregar(translate(vec3{0.0, -0.6, 0.0}));
+    mano_izq->agregar(scale(vec3{0.25, 0.25, 0.25}));
+    mano_izq->agregar(materialBlanco);
+    //mano_izq->ponerColor({0.5, 0.5, 0.55});
+    mano_izq->agregar(new Esfera(60, 60));
+    brazo_izq->agregar(mano_izq);
     
     // Brazo superior izquierdo
     NodoGrafoEscena *brazo_sup_izq = new NodoGrafoEscena();
     brazo_sup_izq->agregar(translate(vec3{0.0, -0.6, 0.0}));
     brazo_sup_izq->agregar(scale(vec3{0.15, 1.2, 0.15}));
-    brazo_sup_izq->ponerColor({0.4, 0.4, 0.45});
+    brazo_sup_izq->agregar(materialNegro);
+    //brazo_sup_izq->ponerColor({0.4, 0.4, 0.45});
     brazo_sup_izq->agregar(new Cilindro(10, 20));
     brazo_izq->agregar(brazo_sup_izq);
 
     // Hombro izquierdo
-    NodoGrafoEscena *codo_izq = new NodoGrafoEscena();
-    codo_izq->agregar(translate(vec3{0.0, 0.6, 0.0}));
-    codo_izq->agregar(scale(vec3{0.25, 0.25, 0.25}));
-    codo_izq->ponerColor({0.5, 0.5, 0.55});
-    codo_izq->agregar(new Esfera(20, 20));
-    brazo_izq->agregar(codo_izq);
+    NodoGrafoEscena *hombro_izq = new NodoGrafoEscena();
+    hombro_izq->agregar(translate(vec3{0.0, 0.6, 0.0}));
+    hombro_izq->agregar(scale(vec3{0.25, 0.25, 0.25}));
+    hombro_izq->agregar(materialBlanco);
+    //hombro_izq->ponerColor({0.5, 0.5, 0.55});
+    hombro_izq->agregar(new Esfera(60, 60));
+    brazo_izq->agregar(hombro_izq);
     
     // Piernas mejoradas con cilindros y esferas en las articulaciones
     NodoGrafoEscena *pierna_izq = new NodoGrafoEscena();
@@ -118,7 +136,8 @@ Robot::Robot() {
     NodoGrafoEscena *pierna_sup_izq = new NodoGrafoEscena();
     pierna_sup_izq->agregar(translate(vec3{0.0, -0.8, 0.0}));
     pierna_sup_izq->agregar(scale(vec3{0.15, 1.1, 0.15}));
-    pierna_sup_izq->ponerColor({0.4, 0.4, 0.45});
+    //pierna_sup_izq->ponerColor({0.4, 0.4, 0.45});
+    pierna_sup_izq->agregar(materialNegro);
     pierna_sup_izq->agregar(new Cilindro(10, 20));
     pierna_izq->agregar(pierna_sup_izq);
     
@@ -126,7 +145,8 @@ Robot::Robot() {
     NodoGrafoEscena *pie_izq = new NodoGrafoEscena();
     pie_izq->agregar(translate(vec3{0.0, -0.8, 0.0}));
     pie_izq->agregar(scale(vec3{0.25, 0.25, 0.25}));
-    pie_izq->ponerColor({0.5, 0.5, 0.55});
+    //pie_izq->ponerColor({0.5, 0.5, 0.55});
+    pie_izq->agregar(materialBlanco);
     pie_izq->agregar(new Esfera(20, 20));
     pierna_izq->agregar(pie_izq);
     
@@ -139,7 +159,8 @@ Robot::Robot() {
     NodoGrafoEscena *pierna_sup_der = new NodoGrafoEscena();
     pierna_sup_der->agregar(translate(vec3{0.0, -0.8, 0.0}));
     pierna_sup_der->agregar(scale(vec3{0.15, 1.1, 0.15}));
-    pierna_sup_der->ponerColor({0.4, 0.4, 0.45});
+    //pierna_sup_der->ponerColor({0.4, 0.4, 0.45});
+    pierna_sup_der->agregar(materialNegro);
     pierna_sup_der->agregar(new Cilindro(10, 20));
     pierna_der->agregar(pierna_sup_der);
     
@@ -147,7 +168,8 @@ Robot::Robot() {
     NodoGrafoEscena *pie_der = new NodoGrafoEscena();
     pie_der->agregar(translate(vec3{0.0, -0.8, 0.0}));
     pie_der->agregar(scale(vec3{0.25, 0.25, 0.25}));
-    pie_der->ponerColor({0.5, 0.5, 0.55});
+    //pie_der->ponerColor({0.0, 0.8, 0.8});
+    pie_der->agregar(materialBlanco);
     pie_der->agregar(new Esfera(20, 20));
     pierna_der->agregar(pie_der);
     
