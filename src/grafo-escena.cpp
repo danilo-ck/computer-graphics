@@ -349,7 +349,29 @@ void NodoGrafoEscena::calcularCentroOC()
    //    en coordenadas de objeto (hay que hacerlo recursivamente)
    //   (si el centro ya ha sido calculado, no volver a hacerlo)
    // ........
+   if (centro_calculado)
+      return;
+   
+   int contadorCentros = 0;
+   mat4 matrizModelado(1.0f);
+   vec3 centroAcumulado = vec3(0.0, 0.0, 0.0);
 
+   for (unsigned int i = 0; i < entradas.size(); i++){
+      if (entradas[i].tipo == TipoEntNGE::transformacion){
+         matrizModelado = matrizModelado * (*entradas[i].matriz);
+      }
+      else if (entradas[i].tipo == TipoEntNGE::objeto){
+         entradas[i].objeto->calcularCentroOC();
+         centroAcumulado = centroAcumulado + vec3(matrizModelado * vec4(entradas[i].objeto->leerCentroOC(),1.0f));
+         contadorCentros++;
+      }
+   }
+
+   for (int i = 0; i < 3; i++) {
+      centroAcumulado[i] /= contadorCentros;
+   }
+   ponerCentroOC( centroAcumulado);
+   centro_calculado = true;
 }
 // -----------------------------------------------------------------------------
 // método para buscar un objeto con un identificador y devolver un puntero al mismo

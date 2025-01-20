@@ -33,6 +33,7 @@
 #include "objeto3d.h"
 #include "malla-ind.h" // para poder usar clase MallaInd
 #include "materiales-luces.h"
+#include "malla-revol.h"
 
 //using namespace tup_mat ;
 
@@ -74,6 +75,7 @@ class NodoGrafoEscena : public Objeto3D
    // COMPLETAR: práctica 3: definir variables y métodos privados del nodo
    
    std::vector<EntradaNGE> entradas ; // vector de entradas del nodo
+   bool centro_calculado = false ;
 
    public:
 

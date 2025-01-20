@@ -66,8 +66,11 @@ int LeerIdentEnPixel( int xpix, int ypix )
    // COMPLETAR: práctica 5: leer el identificador codificado en el color del pixel (x,y)
    // .....(sustituir el 'return 0' por lo que corresponda)
    // .....
-
-   return 0 ;
+   unsigned char bytes[3] ; // para guardar los tres bytes
+   // leer los 3 bytes del frame-buffer
+   glReadPixels( xpix,ypix, 1,1, GL_RGB,GL_UNSIGNED_BYTE, (void *)bytes);
+   // reconstruir el identificador y devolverlo:
+   return int(bytes[0]) + ( int(0x100U)*int(bytes[1]) ) + ( int(0x10000U)*int(bytes[2]) ) ;
 
 }
 
