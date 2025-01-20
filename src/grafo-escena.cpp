@@ -256,7 +256,26 @@ void NodoGrafoEscena::visualizarModoSeleccionGL()
    // 6. Si el identificador no es -1, restaurar el color previo del cauce (con 'popColor')
    //
    // ........
+   int ident = leerIdentificador();
+   if (ident != -1) {
+      cauce->pushColor();
+      cauce->fijarColor(ColorDesdeIdent(ident));
+   }
 
+   cauce->pushMM();
+
+   for (int i = 0; i < entradas.size(); i++) {
+      if (entradas[i].tipo == TipoEntNGE::objeto)
+         entradas[i].objeto->visualizarModoSeleccionGL();
+      else if (entradas[i].tipo == TipoEntNGE::transformacion)
+         cauce->compMM(*entradas[i].matriz);
+   }
+
+   cauce->popMM();
+
+   if (ident != -1){
+      cauce->popColor();
+   }
 
 }
 
@@ -353,16 +372,27 @@ bool NodoGrafoEscena::buscarObjeto
 
    // 1. calcula el centro del objeto, (solo la primera vez)
    // ........
-
+   calcularCentroOC();
 
    // 2. si el identificador del nodo es el que se busca, ya está (terminar)
    // ........
-
+   if (ident_busc == leerIdentificador()) {
+      *objeto = this;
+      centro_wc = leerCentroOC();
+      return true;
+   }
 
    // 3. El nodo no es el buscado: buscar recursivamente en los hijos
    //    (si alguna llamada para un sub-árbol lo encuentra, terminar y devolver 'true')
    // ........
+   mat4 matrizmod = mmodelado;
 
+   for(int i=0; i<entradas.size(); i++){
+        if(entradas[i].tipo == TipoEntNGE::objeto){
+            if(entradas[i].objeto->buscarObjeto(ident_busc, matrizmod, objeto, centro_wc)) return true;
+        }
+        else if(entradas[i].tipo == TipoEntNGE::transformacion) matrizmod = matrizmod*(*entradas[i].matriz);
+   }
 
    // ni este nodo ni ningún hijo es el buscado: terminar
    return false ;
