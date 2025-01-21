@@ -9,12 +9,8 @@
 using namespace std;
 using namespace glm;
 
-class Esferas : public MallaRevol {
-    public:
-        Esferas(const int num_verts_per, const unsigned nperfiles, float radio);
-};
-
 class Robot : public NodoGrafoEscena {
+    
     protected:
         mat4 *pm_rot_cabeza = nullptr;
         mat4 *pm_rot_brazo_izq = nullptr;
