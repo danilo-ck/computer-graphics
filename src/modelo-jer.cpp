@@ -28,7 +28,7 @@ Robot::Robot() {
     NodoGrafoEscena *cuerpo = new NodoGrafoEscena();
     cuerpo->ponerNombre("cuerpo");
     cuerpo->ponerIdentificador(ident++);
-    cuerpo->agregar(translate(vec3{0.0, -0.15, 0.0}));
+    cuerpo->agregar(translate(vec3{0.0, -0.2, 0.0}));
     cuerpo->agregar(scale(vec3{0.6, 1.2, 0.6}));
     cuerpo->agregar(materialBlanco);
     cuerpo->agregar(new Cilindro(80, 80));
